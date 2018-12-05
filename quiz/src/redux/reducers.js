@@ -30,10 +30,10 @@ function currentQuestion(state = 0, action = {}) {
     switch(action.type) {
         case CHANGE_QUESTION:
             return state.map((index) =>{
-               if (index < 9) {
-                   return index + 1;
+               if (index < 9 && index > -1) {
+                   return index;
                }else{
-                  return state;
+                  return 0;
                }
 
                });

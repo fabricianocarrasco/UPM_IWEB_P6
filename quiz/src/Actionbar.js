@@ -5,9 +5,9 @@ export default class Actionbar extends React.Component {
     render() {
         return (
             <div>
-                <Button nombre={"Back"} action={"retroceder"} questions = {this.props.questions} />
-                <Button nombre={"Next"} action={"avanzar"} questions = {this.props.questions}/>
-                <Button nombre={"Submit"} action={"comprobar"} questions = {this.props.questions}/>
+                <Button nombre={"Back"} questionIndex = {this.props.questionIndex} onChangeQuestion={this.props.onChangeQuestion}/>
+                <Button nombre={"Next"} questionIndex = {this.props.questionIndex} onChangeQuestion={this.props.onChangeQuestion}/>
+                <Button nombre={"Submit"} questions = {this.props.questions} onQuestionAnswer={this.props.onQuestionAnswer}/>
             </div>
         );
     }
