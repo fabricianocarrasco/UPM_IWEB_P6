@@ -8,31 +8,40 @@ import {changeQuestion, initQuestions, questionAnswer, submit} from "./redux/act
 
 class App extends Component {
   render() {
-    console.log(this.props.questions);
-    return (
-        <div>
+      if (!this.props.finished) {
+          console.log(this.props.questions);
+          return (
+              <div>
 
-            <Navbar/>
+                  <Navbar score={this.props.score}/>
 
-            <Game question={this.props.questions[this.props.currentQuestion]}
-                  score={this.props.score} finished={this.props.finished} questions = {this.props.questions}
-                  questionIndex = {this.props.currentQuestion}
-                  onQuestionAnswer={(answer)=>{
-                      this.props.dispatch(questionAnswer(this.props.currentQuestion,answer))
-                  }}
-                  onChangeQuestion = {(index)=> {
-                      this.props.dispatch(changeQuestion(index))
-                  }}
-                  onSubmit={(questions)=> {
-                      this.props.dispatch(submit(questions))
-                  }}
-                  onInitQuestions={(questions)=> {
-                      this.props.dispatch(initQuestions(questions))
-                  }}
-                      />
+                  <Game question={this.props.questions[this.props.currentQuestion]}
+                        questionIndex={this.props.currentQuestion}
+                        onQuestionAnswer={(answer) => {
+                            this.props.dispatch(questionAnswer(this.props.currentQuestion, answer))
+                        }}
+                        onChangeQuestion={(index) => {
+                            this.props.dispatch(changeQuestion(index))
+                        }}
+                        onSubmit={() => {
+                            this.props.dispatch(submit(this.props.questions))
+                        }}
+                        onInitQuestions={(questions) => {
+                            this.props.dispatch(initQuestions(questions))
+                        }}
+                  />
 
-        </div>
-    );
+              </div>
+          );
+      }else{
+          return(
+              <div>
+
+                 <h1>Puntuacion: {this.props.score}</h1>
+
+              </div>
+          )
+      }
   }
 }
 

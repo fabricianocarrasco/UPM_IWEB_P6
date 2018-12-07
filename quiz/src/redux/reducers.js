@@ -4,13 +4,15 @@ import {CHANGE_QUESTION, INIT_QUESTIONS, QUESTION_ANSWER, SUBMIT} from "./action
 function score(state = 0, action = {}) {
     switch(action.type) {
         case SUBMIT:
-            return questions.map((questions) =>  {
-                    if (questions.answer === questions.userAnswer){
-                       return state;
+            action.payload.questions.map((questions) =>  {
+                if (!(questions.userAnswer === undefined)) {
+                    if (questions.answer.toUpperCase() === questions.userAnswer.toUpperCase()) {
+                        state = state + 1;
                     }
-                    return state;
-            }
-            );
+                }
+            });
+            return state;
+
 
         default:
             return state;
@@ -19,8 +21,9 @@ function score(state = 0, action = {}) {
 
 function finished(state = false, action = {}) {
     switch(action.type) {
-        case CHANGE_QUESTION:
-            return state = true;
+        case SUBMIT:
+            state= true;
+            return state;
         default:
             return state;
     }
@@ -29,14 +32,12 @@ function finished(state = false, action = {}) {
 function currentQuestion(state = 0, action = {}) {
     switch(action.type) {
         case CHANGE_QUESTION:
-            return state.map((index) =>{
-               if (index < 9 && index > -1) {
-                   return index;
-               }else{
-                  return 0;
-               }
-
-               });
+           if (action.payload.index < 9 && action.payload.index > -1) {
+               state = action.payload.index;
+               return state;
+           }else{
+              return state;
+           }
 
         default:
             return state;

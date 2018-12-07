@@ -5,26 +5,17 @@ export default class Button extends React.Component {
         return (
             <div>
                 <button type="button" onClick={()=>{
-                    switch (this.props.nombre) {
+                    switch (this.props.value) {
                         case'Back':
-                            this.props.onChangeQuestion(()=>{
-                                return this.props.questionIndex - 1;
-                            });
-                            break;
+                            return this.props.onChangeQuestion(this.props.questionIndex - 1);
                         case'Submit':
-                            this.props.onChangeQuestion();
-                            break;
+                            return this.props.onSubmit();
                         case'Next':
-                            this.props.onChangeQuestion(()=>{
-                                return this.props.questionIndex + 1;
-                            });
-                            break;
+                            return this.props.onChangeQuestion(this.props.questionIndex + 1);
                         default:
-                            break;
+                            return 0;
                     }
-
-                       }}
-                >{this.props.nombre || ''}  </button>
+                }}>{this.props.value || ''}  </button>
             </div>
         );
     }

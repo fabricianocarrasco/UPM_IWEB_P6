@@ -10,7 +10,7 @@ export default class Game extends React.Component {
                     <Content question = {this.props.question}  onQuestionAnswer = {this.props.onQuestionAnswer} />
                 </div>
                 <div>
-                    <Actionbar questions = {this.props.questions} questionIndex={this.props.questionIndex} onChangeQuestion = {this.props.onChangeQuestion}/>
+                    <Actionbar questionIndex={this.props.questionIndex} onChangeQuestion = {this.props.onChangeQuestion} onSubmit={this.props.onSubmit}/>
                 </div>
 
 
