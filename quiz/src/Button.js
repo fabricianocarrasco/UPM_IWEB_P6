@@ -12,6 +12,8 @@ export default class Button extends React.Component {
                             return this.props.onSubmit();
                         case'Next':
                             return this.props.onChangeQuestion(this.props.questionIndex + 1);
+                        case 'Reset':
+                            return this.props.resetQuestions();
                         default:
                             return 0;
                     }

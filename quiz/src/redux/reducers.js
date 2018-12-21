@@ -1,18 +1,19 @@
 import { combineReducers } from 'redux';
-import {CHANGE_QUESTION, INIT_QUESTIONS, QUESTION_ANSWER, SUBMIT} from "./actions";
+import {CHANGE_QUESTION, FETCHING, INIT_QUESTIONS, QUESTION_ANSWER, SUBMIT} from "./actions";
 
 function score(state = 0, action = {}) {
+    let newState;
     switch(action.type) {
         case SUBMIT:
+            newState = state;
             action.payload.questions.map((questions) =>  {
-                if (!(questions.userAnswer === undefined)) {
-                    if (questions.answer.toUpperCase() === questions.userAnswer.toUpperCase()) {
-                        state = state + 1;
+                if (!(questions.userAnswer === undefined)){
+                    if (questions.answer.toUpperCase() === questions.userAnswer.toUpperCase()){
+                       newState = newState +1;
                     }
-                }
+                    }
             });
-            return state;
-
+            return newState;
 
         default:
             return state;
@@ -22,19 +23,22 @@ function score(state = 0, action = {}) {
 function finished(state = false, action = {}) {
     switch(action.type) {
         case SUBMIT:
-            state= true;
-            return state;
+            return true;
+        case FETCHING:
+            return false;
         default:
             return state;
     }
 }
 
 function currentQuestion(state = 0, action = {}) {
+    let newState;
     switch(action.type) {
         case CHANGE_QUESTION:
-           if (action.payload.index < 9 && action.payload.index > -1) {
-               state = action.payload.index;
-               return state;
+            newState = state;
+           if (action.payload.index < 10 && action.payload.index > -1) {
+               newState = action.payload.index;
+               return newState;
            }else{
               return state;
            }
@@ -45,18 +49,30 @@ function currentQuestion(state = 0, action = {}) {
 }
 
 function questions(state = [], action = {}) {
+    let newState;
     switch(action.type) {
         case QUESTION_ANSWER:
             return state.map((question,i) =>  {
                 return { ...question,
                             userAnswer: action.payload.index === i ?
-                                        action.payload.answer : action.payload.userAnswer}
+                                        action.payload.answer : question.userAnswer}
             });
         case INIT_QUESTIONS:
-            state.questions.clear();
-            state.questions.push(...questions);
-            return state;
+            //newState = JSON.parse(JSON.stringify(state));
+            //newState.clear();
+            newState = [];
+            //newState.push(...questions);
+            newState.push(...action.payload.questions);
+            return newState;
 
+        default:
+            return state;
+    }
+}
+function fetching(state = false, action={}){
+    switch(action.type) {
+        case FETCHING:
+            return action.payload.status;
         default:
             return state;
     }
@@ -66,7 +82,8 @@ const GlobalState = (combineReducers({
     score,
     finished,
     currentQuestion,
-    questions
+    questions,
+    fetching
 }));
 
 export default GlobalState;
