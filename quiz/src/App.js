@@ -4,13 +4,16 @@ import './App.css';
 import { connect } from 'react-redux';
 import Game from "./Game";
 import Navbar from "./Navbar";
-import {changeQuestion, initQuestions, questionAnswer, submit, fetching} from "./redux/actions";
+import {changeQuestion, initQuestions, questionAnswer, submit, fetching, reset, decrementTimer} from "./redux/actions";
 import Button from "./Button";
 
 class App extends Component {
     componentDidMount(){
         this.props.dispatch(fetching(true));
         this.fetchQuestions();
+        setInterval(()=>{
+            this.props.dispatch(decrementTimer());
+        },1000)
     }
     fetchQuestions(){
         fetch('https://quiz2019.herokuapp.com/api/quizzes/random10wa?token=f6ecb1ed58ae7a2e0491').then((resp)=>
@@ -18,6 +21,11 @@ class App extends Component {
             this.props.dispatch(initQuestions(json));
             this.props.dispatch(fetching(false));
         }).catch(error => console.log(error));
+
+    }
+    endTimer(){
+        this.props.dispatch(submit(this.props.questions));
+        return 'FIN';
     }
   render() {
       if (!this.props.finished) {
@@ -32,7 +40,7 @@ class App extends Component {
               return (
                   <div>
                       <Navbar score={this.props.score}/>
-
+                        <h1>{this.props.timer === 0 ? this.endTimer() : this.props.timer}</h1>
                       <Game question={this.props.questions[this.props.currentQuestion]}
                             questionIndex={this.props.currentQuestion}
                             onQuestionAnswer={(answer) => {
@@ -61,9 +69,13 @@ class App extends Component {
                       return <li>{index}. {question.question} { question.userAnswer === undefined ? "No se ha respondido a la pregunta" : question.answer.toUpperCase() === question.userAnswer.toUpperCase() ? "ACIERTO" : "ERROR"}</li>
                   })}
                   <Button value='Reset' resetQuestions={() => {
+                      this.props.dispatch(reset());
                       this.props.dispatch(fetching(true));
                       this.fetchQuestions();
                   }}/>
+                  <Button value={'Play more'} playMore={() => {
+                      this.props.dispatch(fetching(true));
+                      this.fetchQuestions();}}/>
 
               </div>
           )

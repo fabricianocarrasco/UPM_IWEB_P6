@@ -14,6 +14,8 @@ export default class Button extends React.Component {
                             return this.props.onChangeQuestion(this.props.questionIndex + 1);
                         case 'Reset':
                             return this.props.resetQuestions();
+                        case 'Play more':
+                            return this.props.playMore();
                         default:
                             return 0;
                     }

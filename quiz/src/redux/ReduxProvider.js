@@ -1,8 +1,6 @@
 import {Provider} from 'react-redux';
 import GlobalState from './reducers';
 import {createStore} from "redux";
-import { questions } from "../assets/mock-data"
-import {fetchQuizzes, initQuestions} from "./actions";
 import React from 'react';
 import App from '../App';
 
@@ -14,7 +12,8 @@ export default class ReduxProvider extends React.Component {
             finished: false,
             currentQuestion: 0,
             questions: [],
-            fetching: true
+            fetching: true,
+            timer:60
         };
         this.store = this.configureStore();
     }

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import {CHANGE_QUESTION, FETCHING, INIT_QUESTIONS, QUESTION_ANSWER, SUBMIT} from "./actions";
+import {CHANGE_QUESTION, FETCHING, INIT_QUESTIONS, QUESTION_ANSWER, SUBMIT, RESET, DECREMENT} from "./actions";
 
 function score(state = 0, action = {}) {
     let newState;
@@ -14,6 +14,8 @@ function score(state = 0, action = {}) {
                     }
             });
             return newState;
+        case RESET:
+            return 0;
 
         default:
             return state;
@@ -42,6 +44,8 @@ function currentQuestion(state = 0, action = {}) {
            }else{
               return state;
            }
+        case FETCHING:
+            return 0;
 
         default:
             return state;
@@ -77,13 +81,24 @@ function fetching(state = false, action={}){
             return state;
     }
 }
+function timer(state = 60, action={}) {
+    switch(action.type) {
+    case DECREMENT:
+        return state - 1;
+    case FETCHING:
+        return 60;
+    default:
+        return state;
+    }
 
+}
 const GlobalState = (combineReducers({
     score,
     finished,
     currentQuestion,
     questions,
-    fetching
+    fetching,
+    timer
 }));
 
 export default GlobalState;
