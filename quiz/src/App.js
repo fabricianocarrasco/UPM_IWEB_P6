@@ -15,6 +15,12 @@ class App extends Component {
             this.props.dispatch(decrementTimer());
         },1000)
     }
+ /*   componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.timer === 0) {
+            this.endTimer();
+        }
+    }
+*/
     fetchQuestions(){
         fetch('https://quiz2019.herokuapp.com/api/quizzes/random10wa?token=f6ecb1ed58ae7a2e0491').then((resp)=>
                 resp.json()).then(json=> {
@@ -25,7 +31,6 @@ class App extends Component {
     }
     endTimer(){
         this.props.dispatch(submit(this.props.questions));
-        return 'FIN';
     }
   render() {
       if (!this.props.finished) {
@@ -66,7 +71,7 @@ class App extends Component {
 
                  <h1>Puntuación: {this.props.score}</h1>
                   {this.props.questions.map((question,index)=>{
-                      return <li>{index}. {question.question} { question.userAnswer === undefined ? "No se ha respondido a la pregunta" : question.answer.toUpperCase() === question.userAnswer.toUpperCase() ? "ACIERTO" : "ERROR"}</li>
+                      return <li key={index}>{index}. {question.question} { question.userAnswer === undefined ? "No se ha respondido a la pregunta" : question.answer.toUpperCase() === question.userAnswer.toUpperCase() ? "ACIERTO" : "ERROR"}</li>
                   })}
                   <Button value='Reset' resetQuestions={() => {
                       this.props.dispatch(reset());
