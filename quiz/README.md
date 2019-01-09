@@ -1,3 +1,10 @@
+Mejoras añadidas:
+
+-Botón de Reset al terminar el juego que pone la puntuación a 0 y pide nuevas preguntas.
+-Botón de Play more al terminar el juego que pide nuevas preguntas al servidor pero mantiene la puntuación.
+-Cuenta atrás de 60 segundos que al llegar a 0 termina el juego.
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
